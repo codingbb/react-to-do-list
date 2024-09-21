@@ -4,3 +4,6 @@ body {
 form label {
   white-space: nowrap;
 }
+.form-check input:checked + label {
+  text-decoration: line-through;
+}
