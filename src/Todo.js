@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 
-const Todo = ({ data, deleteTodo, setChecked }) => {
+const Todo = ({ data, deleteTodo, setChecked, update }) => {
   const [mode, setMode] = useState("read");
   const [text, setText] = useState(data.text);
   const [isChecked, setIsChecked] = useState(false);
@@ -24,6 +24,17 @@ const Todo = ({ data, deleteTodo, setChecked }) => {
     className += " hidden";
     formClass = "";
   }
+
+  // 사용자가 입력한 값을 val로 받아옴
+  const handleEdit = (val) => {
+    setText(val);
+  };
+
+  const updateTodo = (e) => {
+    e.preventDefault();
+    update(data.id, text);
+    setMode("read");
+  };
 
   return (
     <div>
@@ -47,13 +58,21 @@ const Todo = ({ data, deleteTodo, setChecked }) => {
           Edit
         </Button>
       </Form.Check>
-      <Form className={formClass}>
+      <Form className={formClass} onSubmit={updateTodo}>
         <Form.Group
           className="mb-3 d-flex gap-2"
           controlId={`edit-todo-${data.id}`}
         >
-          <Form.Control type="text" value={text} />
-          <Button variant="secondary">Update</Button>
+          <Form.Control
+            type="text"
+            value={text}
+            onChange={(e) => {
+              handleEdit(e.target.value);
+            }}
+          />
+          <Button type="submit" variant="secondary">
+            Update
+          </Button>
           <Button
             variant="secondary"
             onClick={() => {
